@@ -10,6 +10,7 @@ import com.ishanvohra.halanxtask.Model.LoginResponse;
 import com.ishanvohra.halanxtask.Network.HalanxAPI;
 import com.ishanvohra.halanxtask.Network.RetrofitService;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -79,4 +80,23 @@ public class Repository {
         return billResponse;
     }
 
+    public MutableLiveData<ResponseBody> deleteBill(int id){
+        MutableLiveData<ResponseBody> mutableLiveData = new MutableLiveData<>();
+        halanxAPI.deleteBill(id).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if(response.isSuccessful()) {
+                    Log.d(TAG, "onResponse: Bill delete successfully");
+                    mutableLiveData.setValue(response.body());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                mutableLiveData.setValue(null);
+            }
+        });
+
+        return mutableLiveData;
+    }
 }

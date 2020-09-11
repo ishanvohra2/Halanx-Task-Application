@@ -9,4 +9,9 @@
     <string name="view_past_bills">View Past Bills</string>
     <string name="create_new_bill">Create new bill</string>
     <string name="delete_bills">Delete Bills</string>
+    <string name="enter_house_name">Enter house name</string>
+    <string name="enter_amount">Enter amount</string>
+    <string name="select_category">Select category</string>
+    <string name="enter_tenant_s_name">Enter Tenant\'s Name</string>
+    <string name="create">Create</string>
 </resources>

@@ -3,8 +3,10 @@ package com.ishanvohra.halanxtask.View;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -16,18 +18,25 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.snackbar.Snackbar;
+import com.ishanvohra.halanxtask.Adapter.SwipeToDeleteCallback;
 import com.ishanvohra.halanxtask.Adapter.ViewBillsAdapter;
 import com.ishanvohra.halanxtask.Model.GetBillsResponse;
 import com.ishanvohra.halanxtask.Model.Result;
 import com.ishanvohra.halanxtask.R;
+import com.ishanvohra.halanxtask.ViewModel.DeleteBillViewModel;
 import com.ishanvohra.halanxtask.ViewModel.GetBillsViewModel;
 
 import java.util.ArrayList;
 
-public class ViewBillsActivity extends AppCompatActivity {
+import okhttp3.Response;
+import okhttp3.ResponseBody;
+
+public class ViewBillsActivity extends AppCompatActivity implements ViewBillsAdapter.RvListener {
 
     private ViewBillsAdapter adapter;
     private static String TAG = "ViewBillsActivity";
+    private String username, password;
 
     private ConstraintLayout bottomSheet;
     private BottomSheetBehavior bottomSheetBehavior;
@@ -36,6 +45,8 @@ public class ViewBillsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_bills);
+
+        CoordinatorLayout coordinatorLayout = findViewById(R.id.coordinator);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -50,14 +61,17 @@ public class ViewBillsActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         SharedPreferences pref = getSharedPreferences("MyPref", MODE_PRIVATE);
-        String username = pref.getString("username","");
-        String password = pref.getString("password", "");
+        username = pref.getString("username","");
+        password = pref.getString("password", "");
 
         GetBillsViewModel viewModel = new ViewModelProvider(ViewBillsActivity.this).get(GetBillsViewModel.class);
         viewModel.init();
 
-        adapter = new ViewBillsAdapter(this, new ArrayList<>());
+        adapter = new ViewBillsAdapter(this, new ArrayList<>(), this);
         recyclerView.setAdapter(adapter);
+
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new SwipeToDeleteCallback(adapter));
+        itemTouchHelper.attachToRecyclerView(recyclerView);
 
         if(!username.isEmpty()){
             viewModel.getBills(username, password).observe(ViewBillsActivity.this, new Observer<GetBillsResponse>() {
@@ -75,8 +89,46 @@ public class ViewBillsActivity extends AppCompatActivity {
         bottomSheet = findViewById(R.id.bottom_sheet);
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
 
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+
         TextView viewPastBills = bottomSheet.findViewById(R.id.bottom_sheet_past_bills_tv);
         TextView createNewBill = bottomSheet.findViewById(R.id.bottom_sheet_create_tv);
         TextView deleteBills = bottomSheet.findViewById(R.id.design_bottom_sheet_delete_tv);
+
+        viewPastBills.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+            }
+        });
+
+        deleteBills.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+
+                Snackbar snackbar = Snackbar.make(coordinatorLayout, "Swipe any bill to delete it.", Snackbar.LENGTH_LONG);
+                snackbar.show();
+            }
+        });
+
+        createNewBill.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(ViewBillsActivity.this, CreateNewBillActivity.class));
+            }
+        });
+    }
+
+    @Override
+    public void deleteBill(Result bill, int pos) {
+        DeleteBillViewModel viewModel = new ViewModelProvider(ViewBillsActivity.this).get(DeleteBillViewModel.class);
+        viewModel.init();
+        viewModel.deleteBill(username, password, bill.getId()).observe(this, new Observer<ResponseBody>() {
+            @Override
+            public void onChanged(ResponseBody responseBody) {
+
+            }
+        });
     }
 }
