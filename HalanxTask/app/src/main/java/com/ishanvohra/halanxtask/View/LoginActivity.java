@@ -42,6 +42,8 @@ public class LoginActivity extends AppCompatActivity {
                                     SharedPreferences pref = getSharedPreferences("MyPref", MODE_PRIVATE);
                                     SharedPreferences.Editor editor = pref.edit();
                                     editor.putString("key", loginResponse.getKey());
+                                    editor.putString("username", "o" + usernameEt.getText().toString());
+                                    editor.putString("password", passwordEt.getText().toString());
                                     editor.apply();
 
                                     startActivity(new Intent(LoginActivity.this, ViewBillsActivity.class));

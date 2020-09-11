@@ -4,6 +4,7 @@ import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
 
+import com.ishanvohra.halanxtask.Model.GetBillsResponse;
 import com.ishanvohra.halanxtask.Model.LoginBody;
 import com.ishanvohra.halanxtask.Model.LoginResponse;
 import com.ishanvohra.halanxtask.Network.HalanxAPI;
@@ -28,7 +29,11 @@ public class Repository {
     private HalanxAPI halanxAPI;
 
     public Repository(){
-        halanxAPI = RetrofitService.cteateService(HalanxAPI.class);
+        halanxAPI = RetrofitService.createService(HalanxAPI.class);
+    }
+
+    public Repository(String username, String password){
+        halanxAPI = RetrofitService.createService(HalanxAPI.class, username, password);
     }
 
     public MutableLiveData<LoginResponse> login(String phone, String password){
@@ -50,6 +55,28 @@ public class Repository {
         });
 
         return loginResponse;
+    }
+
+    public  MutableLiveData<GetBillsResponse> getBills(){
+        MutableLiveData<GetBillsResponse> billResponse = new MutableLiveData<>();
+
+        halanxAPI.getBills().enqueue(new Callback<GetBillsResponse>() {
+            @Override
+            public void onResponse(Call<GetBillsResponse> call, Response<GetBillsResponse> response) {
+                if(response.isSuccessful())
+                    billResponse.setValue(response.body());
+
+                Log.d(TAG, "Get Bills Response: " + response.code() + " " + response.message());
+            }
+
+            @Override
+            public void onFailure(Call<GetBillsResponse> call, Throwable t) {
+                Log.d(TAG, "Get Bills Failed " + t.getMessage());
+                billResponse.setValue(null);
+            }
+        });
+
+        return billResponse;
     }
 
 }

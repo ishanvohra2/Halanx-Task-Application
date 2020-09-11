@@ -3,4 +3,7 @@
     <string name="enter_your_phone_number">Enter your phone number</string>
     <string name="enter_password">Enter password</string>
     <string name="login">Login</string>
+    <string name="date">Date</string>
+    <string name="tenant_name">Tenant Name</string>
+    <string name="category">Category</string>
 </resources>

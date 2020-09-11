@@ -9,6 +9,7 @@
     android:layout_margin="8dp">
 
     <ImageView
+        android:id="@+id/bill_item_iv"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:scaleType="fitCenter"
@@ -22,9 +23,10 @@
         android:layout_margin="8dp">
 
         <TextView
+            android:id="@+id/bill_item_category_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Category"
+            android:text="@string/category"
             android:textSize="17sp"
             android:textColor="@color/colorAccent"
             android:fontFamily="sans-serif-light"
@@ -34,10 +36,24 @@
             android:layout_gravity="center_vertical"/>
 
         <TextView
+            android:id="@+id/bill_item_money_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Tenant Name"
-            android:textSize="21sp"
+            android:text="Rs. 120"
+            android:textSize="23sp"
+            android:textColor="@color/colorAccent"
+            android:fontFamily="sans-serif-light"
+            android:paddingEnd="8dp"
+            android:paddingStart="0dp"
+            android:layout_gravity="center_vertical"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/bill_item_tenant_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tenant_name"
+            android:textSize="19sp"
             android:textColor="@color/colorAccent"
             android:fontFamily="sans-serif-light"
             android:textStyle="bold"
@@ -46,16 +62,17 @@
             android:layout_gravity="center_vertical"/>
 
         <TextView
+            android:id="@+id/bill_item_date_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Date"
+            android:text="@string/date"
             android:textSize="19sp"
             android:textColor="@color/colorAccent"
             android:fontFamily="sans-serif-light"
-            android:textStyle="bold"
             android:paddingEnd="8dp"
             android:paddingStart="0dp"
-            android:layout_gravity="center_vertical"/>
+            android:layout_gravity="center_vertical"
+            android:textStyle="bold"/>
 
     </LinearLayout>
 
