@@ -6,4 +6,7 @@
     <string name="date">Date</string>
     <string name="tenant_name">Tenant Name</string>
     <string name="category">Category</string>
+    <string name="view_past_bills">View Past Bills</string>
+    <string name="create_new_bill">Create new bill</string>
+    <string name="delete_bills">Delete Bills</string>
 </resources>

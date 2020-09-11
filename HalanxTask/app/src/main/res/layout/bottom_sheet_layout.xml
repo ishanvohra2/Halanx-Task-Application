@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/bottom_sheet"
+    app:behavior_peekHeight="50dp"
+    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@drawable/bottom_sheet_background">
+
+        <TextView
+            android:id="@+id/bottom_sheet_past_bills_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="12dp"
+            android:layout_margin="8dp"
+            android:text="@string/view_past_bills"
+            android:textColor="@android:color/white"
+            android:textSize="17sp"
+            android:drawablePadding="8dp"
+            app:drawableStartCompat="@drawable/ic_baseline_history_24" />
+
+        <TextView
+            android:id="@+id/bottom_sheet_create_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="12dp"
+            android:layout_margin="8dp"
+            android:text="@string/create_new_bill"
+            android:textColor="@android:color/white"
+            android:textSize="17sp"
+            android:drawablePadding="8dp"
+            app:drawableStartCompat="@drawable/ic_baseline_add_circle_outline_24" />
+
+        <TextView
+            android:id="@+id/design_bottom_sheet_delete_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="12dp"
+            android:layout_margin="8dp"
+            android:text="@string/delete_bills"
+            android:textColor="@android:color/white"
+            android:textSize="17sp"
+            android:drawablePadding="8dp"
+            app:drawableStartCompat="@drawable/ic_baseline_delete_24" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

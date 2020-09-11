@@ -2,6 +2,7 @@ package com.ishanvohra.halanxtask.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -12,7 +13,9 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.ishanvohra.halanxtask.Adapter.ViewBillsAdapter;
 import com.ishanvohra.halanxtask.Model.GetBillsResponse;
 import com.ishanvohra.halanxtask.Model.Result;
@@ -25,6 +28,9 @@ public class ViewBillsActivity extends AppCompatActivity {
 
     private ViewBillsAdapter adapter;
     private static String TAG = "ViewBillsActivity";
+
+    private ConstraintLayout bottomSheet;
+    private BottomSheetBehavior bottomSheetBehavior;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,5 +72,11 @@ public class ViewBillsActivity extends AppCompatActivity {
             });
         }
 
+        bottomSheet = findViewById(R.id.bottom_sheet);
+        bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
+
+        TextView viewPastBills = bottomSheet.findViewById(R.id.bottom_sheet_past_bills_tv);
+        TextView createNewBill = bottomSheet.findViewById(R.id.bottom_sheet_create_tv);
+        TextView deleteBills = bottomSheet.findViewById(R.id.design_bottom_sheet_delete_tv);
     }
 }
