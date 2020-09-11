@@ -6,7 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".View.ViewBillsActivity"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/pink">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -19,6 +20,7 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        tools:listitem="@layout/bill_item"/>
 
 </LinearLayout>
