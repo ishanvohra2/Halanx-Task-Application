@@ -19,6 +19,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.snackbar.Snackbar;
 import com.ishanvohra.halanxtask.Adapter.SwipeToDeleteCallback;
@@ -52,8 +53,11 @@ public class ViewBillsActivity extends AppCompatActivity implements ViewBillsAda
         setContentView(R.layout.activity_view_bills);
 
         CoordinatorLayout coordinatorLayout = findViewById(R.id.coordinator);
-        fetchBillSheet = findViewById(R.id.fetch_bill_bottom_sheet);
+        ShimmerFrameLayout shimmerFrameLayout = findViewById(R.id.shimmer);
 
+        shimmerFrameLayout.startShimmer();
+
+        fetchBillSheet = findViewById(R.id.fetch_bill_bottom_sheet);
         fetchBillSheetBehaviour = BottomSheetBehavior.from(fetchBillSheet);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -87,6 +91,8 @@ public class ViewBillsActivity extends AppCompatActivity implements ViewBillsAda
                 @Override
                 public void onChanged(GetBillsResponse getBillsResponse) {
                     if(getBillsResponse != null){
+                        shimmerFrameLayout.stopShimmer();
+                        shimmerFrameLayout.setVisibility(View.GONE);
                         adapter.setBills((ArrayList<Result>) getBillsResponse.getResults());
                         adapter.notifyDataSetChanged();
                         Log.d(TAG, "Bills loaded into RV " + getBillsResponse.getCount());

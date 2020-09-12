@@ -71,6 +71,7 @@ public class CreateNewBillActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                startActivity(new Intent(CreateNewBillActivity.this, ViewBillsActivity.class));
                 finish();
             }
         });
