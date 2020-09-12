@@ -15,6 +15,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,8 +41,8 @@ public class ViewBillsActivity extends AppCompatActivity implements ViewBillsAda
     private static String TAG = "ViewBillsActivity";
     private String username, password;
 
-    private ConstraintLayout bottomSheet;
-    private BottomSheetBehavior bottomSheetBehavior;
+    private ConstraintLayout bottomSheet, fetchBillSheet;
+    private BottomSheetBehavior bottomSheetBehavior, fetchBillSheetBehaviour;
 
     private GetBillsViewModel viewModel;
 
@@ -51,6 +52,9 @@ public class ViewBillsActivity extends AppCompatActivity implements ViewBillsAda
         setContentView(R.layout.activity_view_bills);
 
         CoordinatorLayout coordinatorLayout = findViewById(R.id.coordinator);
+        fetchBillSheet = findViewById(R.id.fetch_bill_bottom_sheet);
+
+        fetchBillSheetBehaviour = BottomSheetBehavior.from(fetchBillSheet);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -121,6 +125,7 @@ public class ViewBillsActivity extends AppCompatActivity implements ViewBillsAda
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(ViewBillsActivity.this, CreateNewBillActivity.class));
+                finish();
             }
         });
     }
@@ -139,12 +144,41 @@ public class ViewBillsActivity extends AppCompatActivity implements ViewBillsAda
 
     @Override
     public void fetchBill(Result bill) {
-        Toast.makeText(this, "" + bill.getId(), Toast.LENGTH_SHORT).show();
+        TextView tenantNameTv, tenantPhoneTv, addressTv, categoryTv, dueDateTv, amountTv;
+
+        tenantNameTv = fetchBillSheet.findViewById(R.id.fetch_bill_tenant_tv);
+        tenantPhoneTv = fetchBillSheet.findViewById(R.id.fetch_bill_tenant_phone_tv);
+        categoryTv = fetchBillSheet.findViewById(R.id.fetch_bill_category_tv);
+        dueDateTv = fetchBillSheet.findViewById(R.id.fetch_bill_date_tv);
+        amountTv = fetchBillSheet.findViewById(R.id.fetch_bill_money_tv);
+        addressTv = fetchBillSheet.findViewById(R.id.fetch_bill_address_tv);
+        Toolbar toolbar = fetchBillSheet.findViewById(R.id.toolbar);
+
         viewModel.getBill(bill.getId()).observe(this, new Observer<GetBillResponse>() {
             @Override
             public void onChanged(GetBillResponse getBillResponse) {
-                if(getBillResponse != null)
-                    Log.d(TAG, "onChanged: " + getBillResponse.getCreatedAt());
+                if(getBillResponse != null){
+                    fetchBillSheetBehaviour.setState(BottomSheetBehavior.STATE_EXPANDED);
+
+                    tenantNameTv.setText(getBillResponse.getTenant().getUser().getFirstName());
+                    tenantPhoneTv.setText(getBillResponse.getTenant().getPhoneNo());
+                    categoryTv.setText(getBillResponse.getCategory().getName());
+                    dueDateTv.setText("Due Date : " + getBillResponse.getDueDate());
+                    amountTv.setText("Amount To Be Paid. : " + getBillResponse.getAmount());
+                    addressTv.setText(getBillResponse.getHouse().getAddress().getCompleteAddress());
+                }
+            }
+        });
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                tenantNameTv.setText(getString(R.string.tenant_name));
+                tenantPhoneTv.setText("9595959595");
+                categoryTv.setText(getString(R.string.category));
+                dueDateTv.setText("Due Date : ");
+                amountTv.setText("Amount To Be Paid. : ");
+                fetchBillSheetBehaviour.setState(BottomSheetBehavior.STATE_COLLAPSED);
             }
         });
     }

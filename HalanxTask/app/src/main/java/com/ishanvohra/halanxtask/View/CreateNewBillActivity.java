@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.ishanvohra.halanxtask.Adapter.CategoryAdapter;
 import com.ishanvohra.halanxtask.Adapter.HouseAdapter;
@@ -211,6 +212,9 @@ public class CreateNewBillActivity extends AppCompatActivity {
                     @Override
                     public void onChanged(CreateBillResponse createBillResponse) {
                         if(createBillResponse != null){
+                            Snackbar snackbar = Snackbar.make(findViewById(R.id.coordinator), "Bill created", Snackbar.LENGTH_LONG);
+                            snackbar.show();
+                            startActivity(new Intent(CreateNewBillActivity.this, ViewBillsActivity.class));
                             finish();
                         }
                     }
