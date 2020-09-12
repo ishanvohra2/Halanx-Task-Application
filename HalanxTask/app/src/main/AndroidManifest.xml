@@ -10,8 +10,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Design.Light.NoActionBar">
-        <activity android:name=".View.CreateNewBillActivity"></activity>
+        android:theme="@style/Theme.MaterialComponents.Light.NoActionBar">
+        <activity android:name=".View.CreateNewBillActivity"/>
         <activity android:name=".View.ViewBillsActivity" />
         <activity android:name=".View.LoginActivity">
             <intent-filter>

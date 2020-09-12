@@ -37,108 +37,75 @@
                 android:minHeight="256dp"
                 android:layout_gravity="bottom"
                 android:padding="12dp"
-                android:layout_marginBottom="12dp"
-                android:alpha="0.7"/>
+                android:alpha="0.85"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/enter_house_name"
-                    android:textSize="16sp"
-                    android:layout_marginTop="12dp"
-                    android:layout_marginStart="12dp"
-                    android:layout_marginEnd="12dp"/>
-
                 <androidx.appcompat.widget.AppCompatAutoCompleteTextView
+                    android:id="@+id/create_bill_house_tv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Enter here"
+                    android:lines="1"
+                    android:padding="18dp"
+                    android:background="@drawable/edit_text_background"
+                    android:hint="@string/enter_house_name"
                     android:layout_marginStart="12dp"
-                    android:layout_marginEnd="12dp"/>
+                    android:layout_marginEnd="12dp"
+                    android:layout_marginTop="8dp"/>
 
-                <TextView
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/create_bill_amount_et"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/enter_amount"
-                    android:textSize="16sp"
-                    android:layout_marginTop="12dp"
+                    android:inputType="number"
+                    android:lines="1"
+                    android:padding="18dp"
+                    android:background="@drawable/edit_text_background"
+                    android:hint="@string/enter_amount"
                     android:layout_marginStart="12dp"
-                    android:layout_marginEnd="12dp"/>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="INR."
-                    android:layout_marginStart="12dp"
-                    android:layout_marginEnd="12dp">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="number"/>
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/select_category"
-                    android:textSize="16sp"
-                    android:layout_marginTop="12dp"
-                    android:layout_marginStart="12dp"
-                    android:layout_marginEnd="12dp"/>
+                    android:layout_marginEnd="12dp"
+                    android:layout_marginTop="8dp"/>
 
                 <Spinner
+                    android:id="@+id/create_bill_category_spinner"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:layout_margin="12dp"
-                    android:background="@drawable/button_background"/>
+                    android:layout_marginStart="12dp"
+                    android:layout_marginEnd="12dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/button_background" />
 
                 <TextView
+                    android:id="@+id/create_bill_due_date_et"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Due date"
-                    android:textSize="16sp"
-                    android:layout_marginTop="12dp"
+                    android:lines="1"
+                    android:padding="18dp"
+                    android:textSize="17sp"
+                    android:hint="Due Date"
+                    android:textColor="@android:color/black"
+                    android:background="@drawable/edit_text_background"
                     android:layout_marginStart="12dp"
-                    android:layout_marginEnd="12dp"/>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="DD/MM/YYYY"
-                    android:layout_marginStart="12dp"
-                    android:layout_marginEnd="12dp">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="number"/>
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/enter_tenant_s_name"
-                    android:textSize="16sp"
-                    android:layout_marginTop="12dp"
-                    android:layout_marginStart="12dp"
-                    android:layout_marginEnd="12dp"/>
+                    android:layout_marginEnd="12dp"
+                    android:layout_marginTop="8dp"/>
 
                 <androidx.appcompat.widget.AppCompatAutoCompleteTextView
+                    android:id="@+id/create_bill_tenant_tv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Enter here"
+                    android:hint="@string/tenant_name"
+                    android:padding="18dp"
+                    android:lines="1"
                     android:layout_marginStart="12dp"
-                    android:layout_marginEnd="12dp"/>
+                    android:layout_marginEnd="12dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/edit_text_background"/>
 
                 <Button
+                    android:id="@+id/create_bill_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -146,7 +113,7 @@
                     android:paddingEnd="50dp"
                     android:text="@string/create"
                     android:textColor="@android:color/white"
-                    android:background="@drawable/button_background"
+                    android:backgroundTint="@color/colorAccent"
                     android:layout_marginBottom="8dp"
                     android:layout_marginTop="12dp"/>
 

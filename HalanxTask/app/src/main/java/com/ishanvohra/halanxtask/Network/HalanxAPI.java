@@ -1,8 +1,15 @@
 package com.ishanvohra.halanxtask.Network;
 
+import com.ishanvohra.halanxtask.Model.Category;
+import com.ishanvohra.halanxtask.Model.CreateBillBody;
+import com.ishanvohra.halanxtask.Model.CreateBillResponse;
 import com.ishanvohra.halanxtask.Model.GetBillsResponse;
+import com.ishanvohra.halanxtask.Model.GetHouseResponse;
+import com.ishanvohra.halanxtask.Model.GetTenantResponse;
 import com.ishanvohra.halanxtask.Model.LoginBody;
 import com.ishanvohra.halanxtask.Model.LoginResponse;
+
+import java.util.List;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -24,5 +31,17 @@ public interface HalanxAPI {
 
     @DELETE("/homes/owners/bills/{id}/")
     Call<ResponseBody> deleteBill(@Path("id") int id);
+
+    @GET("/homes/houses/bills/categories/")
+    Call<List<Category>> getCategories();
+
+    @GET("/homes/owners/houses/")
+    Call<GetHouseResponse> getHouses();
+
+    @GET("/homes/tenants/?moved-out=False&invitation-status=accepted")
+    Call<List<GetTenantResponse>> getTenants();
+
+    @POST("/homes/owners/bills/")
+    Call<CreateBillResponse> createBill(@Body CreateBillBody billBody);
 
 }

@@ -4,11 +4,18 @@ import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
 
+import com.ishanvohra.halanxtask.Model.Category;
+import com.ishanvohra.halanxtask.Model.CreateBillBody;
+import com.ishanvohra.halanxtask.Model.CreateBillResponse;
 import com.ishanvohra.halanxtask.Model.GetBillsResponse;
+import com.ishanvohra.halanxtask.Model.GetHouseResponse;
+import com.ishanvohra.halanxtask.Model.GetTenantResponse;
 import com.ishanvohra.halanxtask.Model.LoginBody;
 import com.ishanvohra.halanxtask.Model.LoginResponse;
 import com.ishanvohra.halanxtask.Network.HalanxAPI;
 import com.ishanvohra.halanxtask.Network.RetrofitService;
+
+import java.util.List;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -93,6 +100,86 @@ public class Repository {
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
+                mutableLiveData.setValue(null);
+            }
+        });
+
+        return mutableLiveData;
+    }
+
+    public MutableLiveData<List<Category>> getCategories(){
+        MutableLiveData<List<Category>> mutableLiveData = new MutableLiveData<>();
+        halanxAPI.getCategories().enqueue(new Callback<List<Category>>() {
+            @Override
+            public void onResponse(Call<List<Category>> call, Response<List<Category>> response) {
+                if(response.isSuccessful()){
+                    mutableLiveData.setValue(response.body());
+                }
+                Log.d(TAG, "Get Categories Response: " + response.code() + " " + response.message());
+            }
+
+            @Override
+            public void onFailure(Call<List<Category>> call, Throwable t) {
+                mutableLiveData.setValue(null);
+            }
+        });
+
+        return mutableLiveData;
+    }
+
+    public MutableLiveData<GetHouseResponse> getHouses(){
+        MutableLiveData<GetHouseResponse> mutableLiveData = new MutableLiveData<>();
+        halanxAPI.getHouses().enqueue(new Callback<GetHouseResponse>() {
+            @Override
+            public void onResponse(Call<GetHouseResponse> call, Response<GetHouseResponse> response) {
+                if(response.isSuccessful()){
+                    mutableLiveData.setValue(response.body());
+                }
+                Log.d(TAG, "Get Houses Response: " + response.code() + " " + response.message());
+            }
+
+            @Override
+            public void onFailure(Call<GetHouseResponse> call, Throwable t) {
+                mutableLiveData.setValue(null);
+            }
+        });
+
+        return mutableLiveData;
+    }
+
+    public MutableLiveData<List<GetTenantResponse>> getTenants(){
+        MutableLiveData<List<GetTenantResponse>> mutableLiveData = new MutableLiveData<>();
+        halanxAPI.getTenants().enqueue(new Callback<List<GetTenantResponse>>() {
+            @Override
+            public void onResponse(Call<List<GetTenantResponse>> call, Response<List<GetTenantResponse>> response) {
+                if(response.isSuccessful()){
+                    mutableLiveData.setValue(response.body());
+                }
+                Log.d(TAG, "Get Tenants Response: " + response.code() + " " + response.message());
+            }
+
+            @Override
+            public void onFailure(Call<List<GetTenantResponse>> call, Throwable t) {
+                mutableLiveData.setValue(null);
+            }
+        });
+
+        return mutableLiveData;
+    }
+
+    public MutableLiveData<CreateBillResponse> createBill(CreateBillBody createBillBody){
+        MutableLiveData<CreateBillResponse> mutableLiveData = new MutableLiveData<>();
+        halanxAPI.createBill(createBillBody).enqueue(new Callback<CreateBillResponse>() {
+            @Override
+            public void onResponse(Call<CreateBillResponse> call, Response<CreateBillResponse> response) {
+                if(response.isSuccessful())
+                    mutableLiveData.setValue(response.body());
+
+                Log.d(TAG, "Create Bill Response: " + response.code() + " " + response.message());
+            }
+
+            @Override
+            public void onFailure(Call<CreateBillResponse> call, Throwable t) {
                 mutableLiveData.setValue(null);
             }
         });
