@@ -16,11 +16,13 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.snackbar.Snackbar;
 import com.ishanvohra.halanxtask.Adapter.SwipeToDeleteCallback;
 import com.ishanvohra.halanxtask.Adapter.ViewBillsAdapter;
+import com.ishanvohra.halanxtask.Model.GetBillResponse;
 import com.ishanvohra.halanxtask.Model.GetBillsResponse;
 import com.ishanvohra.halanxtask.Model.Result;
 import com.ishanvohra.halanxtask.R;
@@ -40,6 +42,8 @@ public class ViewBillsActivity extends AppCompatActivity implements ViewBillsAda
 
     private ConstraintLayout bottomSheet;
     private BottomSheetBehavior bottomSheetBehavior;
+
+    private GetBillsViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,8 +68,8 @@ public class ViewBillsActivity extends AppCompatActivity implements ViewBillsAda
         username = pref.getString("username","");
         password = pref.getString("password", "");
 
-        GetBillsViewModel viewModel = new ViewModelProvider(ViewBillsActivity.this).get(GetBillsViewModel.class);
-        viewModel.init();
+        viewModel = new ViewModelProvider(ViewBillsActivity.this).get(GetBillsViewModel.class);
+        viewModel.init(username, password);
 
         adapter = new ViewBillsAdapter(this, new ArrayList<>(), this);
         recyclerView.setAdapter(adapter);
@@ -74,7 +78,8 @@ public class ViewBillsActivity extends AppCompatActivity implements ViewBillsAda
         itemTouchHelper.attachToRecyclerView(recyclerView);
 
         if(!username.isEmpty()){
-            viewModel.getBills(username, password).observe(ViewBillsActivity.this, new Observer<GetBillsResponse>() {
+            viewModel.init(username, password);
+            viewModel.getBills().observe(ViewBillsActivity.this, new Observer<GetBillsResponse>() {
                 @Override
                 public void onChanged(GetBillsResponse getBillsResponse) {
                     if(getBillsResponse != null){
@@ -128,6 +133,18 @@ public class ViewBillsActivity extends AppCompatActivity implements ViewBillsAda
             @Override
             public void onChanged(ResponseBody responseBody) {
 
+            }
+        });
+    }
+
+    @Override
+    public void fetchBill(Result bill) {
+        Toast.makeText(this, "" + bill.getId(), Toast.LENGTH_SHORT).show();
+        viewModel.getBill(bill.getId()).observe(this, new Observer<GetBillResponse>() {
+            @Override
+            public void onChanged(GetBillResponse getBillResponse) {
+                if(getBillResponse != null)
+                    Log.d(TAG, "onChanged: " + getBillResponse.getCreatedAt());
             }
         });
     }

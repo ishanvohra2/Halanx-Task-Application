@@ -3,6 +3,7 @@ package com.ishanvohra.halanxtask.Network;
 import com.ishanvohra.halanxtask.Model.Category;
 import com.ishanvohra.halanxtask.Model.CreateBillBody;
 import com.ishanvohra.halanxtask.Model.CreateBillResponse;
+import com.ishanvohra.halanxtask.Model.GetBillResponse;
 import com.ishanvohra.halanxtask.Model.GetBillsResponse;
 import com.ishanvohra.halanxtask.Model.GetHouseResponse;
 import com.ishanvohra.halanxtask.Model.GetTenantResponse;
@@ -43,5 +44,8 @@ public interface HalanxAPI {
 
     @POST("/homes/owners/bills/")
     Call<CreateBillResponse> createBill(@Body CreateBillBody billBody);
+
+    @GET("/homes/owners/bills/{id}/")
+    Call<GetBillResponse> getBill(@Path("id") int id);
 
 }

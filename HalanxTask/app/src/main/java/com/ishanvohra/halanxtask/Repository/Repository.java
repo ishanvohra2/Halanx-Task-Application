@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.ishanvohra.halanxtask.Model.Category;
 import com.ishanvohra.halanxtask.Model.CreateBillBody;
 import com.ishanvohra.halanxtask.Model.CreateBillResponse;
+import com.ishanvohra.halanxtask.Model.GetBillResponse;
 import com.ishanvohra.halanxtask.Model.GetBillsResponse;
 import com.ishanvohra.halanxtask.Model.GetHouseResponse;
 import com.ishanvohra.halanxtask.Model.GetTenantResponse;
@@ -180,6 +181,28 @@ public class Repository {
 
             @Override
             public void onFailure(Call<CreateBillResponse> call, Throwable t) {
+                mutableLiveData.setValue(null);
+            }
+        });
+
+        return mutableLiveData;
+    }
+
+    public MutableLiveData<GetBillResponse> getBill(int id){
+        MutableLiveData<GetBillResponse> mutableLiveData = new MutableLiveData<>();
+        halanxAPI.getBill(id).enqueue(new Callback<GetBillResponse>() {
+            @Override
+            public void onResponse(Call<GetBillResponse> call, Response<GetBillResponse> response) {
+                if(response.isSuccessful())
+                    mutableLiveData.setValue(response.body());
+
+                Log.d(TAG, "Get Bill Response: " + response.code() + " " + response.message());
+
+            }
+
+            @Override
+            public void onFailure(Call<GetBillResponse> call, Throwable t) {
+                Log.d(TAG, "Bill fetch Failed " + t.getMessage());
                 mutableLiveData.setValue(null);
             }
         });

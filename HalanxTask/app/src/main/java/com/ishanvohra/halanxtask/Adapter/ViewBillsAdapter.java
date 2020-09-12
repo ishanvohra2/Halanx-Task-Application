@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -24,6 +25,7 @@ public class ViewBillsAdapter extends RecyclerView.Adapter<ViewBillsAdapter.MyVi
 
     public interface RvListener{
         public void deleteBill(Result bill, int pos);
+        public void fetchBill(Result bill);
     }
 
     public void setBills(ArrayList<Result> dataSet){
@@ -79,6 +81,14 @@ public class ViewBillsAdapter extends RecyclerView.Adapter<ViewBillsAdapter.MyVi
                 holder.imageView.setImageDrawable(context.getDrawable(R.drawable.ic_gas));
                 break;
         }
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(context, "Touched" , Toast.LENGTH_SHORT).show();
+                rvListener.fetchBill(response);
+            }
+        });
 
     }
 
