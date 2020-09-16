@@ -62,7 +62,7 @@ public class CreateNewBillActivity extends AppCompatActivity {
         TextInputEditText amountEt = findViewById(R.id.create_bill_amount_et);
 
         SharedPreferences pref = getSharedPreferences("MyPref", MODE_PRIVATE);
-        username = pref.getString("username","");
+        username = "o" + pref.getString("username","");
         password = pref.getString("password", "");
 
         CreateBillViewModel viewModel = new ViewModelProvider(this).get(CreateBillViewModel.class);

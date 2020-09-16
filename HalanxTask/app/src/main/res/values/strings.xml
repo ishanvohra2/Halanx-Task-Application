@@ -16,4 +16,5 @@
     <string name="create">Create</string>
     <string name="phone_number">Phone Number</string>
     <string name="mark_as_paid_offline">Mark as paid offline</string>
+    <string name="log_out">Log Out</string>
 </resources>

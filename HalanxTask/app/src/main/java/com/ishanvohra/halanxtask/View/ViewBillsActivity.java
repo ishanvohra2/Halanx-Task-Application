@@ -65,19 +65,12 @@ public class ViewBillsActivity extends AppCompatActivity implements ViewBillsAda
         fetchBillSheetBehaviour = BottomSheetBehavior.from(fetchBillSheet);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(ViewBillsActivity.this, LoginActivity.class));
-                finish();
-            }
-        });
 
         RecyclerView recyclerView = findViewById(R.id.view_bills_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         SharedPreferences pref = getSharedPreferences("MyPref", MODE_PRIVATE);
-        username = pref.getString("username","");
+        username = "o" + pref.getString("username","");
         password = pref.getString("password", "");
 
         viewModel = new ViewModelProvider(ViewBillsActivity.this).get(GetBillsViewModel.class);
@@ -102,6 +95,21 @@ public class ViewBillsActivity extends AppCompatActivity implements ViewBillsAda
         TextView viewPastBills = bottomSheet.findViewById(R.id.bottom_sheet_past_bills_tv);
         TextView createNewBill = bottomSheet.findViewById(R.id.bottom_sheet_create_tv);
         TextView deleteBills = bottomSheet.findViewById(R.id.design_bottom_sheet_delete_tv);
+        TextView logOut = bottomSheet.findViewById(R.id.design_bottom_sheet_logout_tv);
+        logOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SharedPreferences pref = getSharedPreferences("MyPref", MODE_PRIVATE);
+                SharedPreferences.Editor editor = pref.edit();
+                editor.remove("key");
+                editor.remove("username");
+                editor.remove("password");
+                editor.apply();
+
+                startActivity(new Intent(ViewBillsActivity.this,LoginActivity.class));
+                finish();
+            }
+        });
 
         viewPastBills.setOnClickListener(new View.OnClickListener() {
             @Override

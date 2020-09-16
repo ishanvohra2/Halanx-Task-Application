@@ -54,6 +54,18 @@
             android:drawablePadding="8dp"
             app:drawableStartCompat="@drawable/ic_baseline_delete_24" />
 
+        <TextView
+            android:id="@+id/design_bottom_sheet_logout_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="12dp"
+            android:layout_margin="8dp"
+            android:text="@string/log_out"
+            android:textColor="@android:color/white"
+            android:textSize="17sp"
+            android:drawablePadding="8dp"
+            app:drawableStartCompat="@drawable/ic_baseline_power_settings_new_24" />
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
