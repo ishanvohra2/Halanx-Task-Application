@@ -30,16 +30,6 @@
             app:cardCornerRadius="10dp"
             app:cardBackgroundColor="@android:color/white">
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_undraw_receipt_ecdd"
-                android:scaleType="fitCenter"
-                android:minHeight="256dp"
-                android:layout_gravity="bottom"
-                android:padding="12dp"
-                android:alpha="0.85"/>
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

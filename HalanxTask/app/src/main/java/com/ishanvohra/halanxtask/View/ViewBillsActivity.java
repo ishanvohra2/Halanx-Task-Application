@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -21,6 +22,7 @@ import android.widget.Toast;
 
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 import com.ishanvohra.halanxtask.Adapter.SwipeToDeleteCallback;
 import com.ishanvohra.halanxtask.Adapter.ViewBillsAdapter;
@@ -46,6 +48,7 @@ public class ViewBillsActivity extends AppCompatActivity implements ViewBillsAda
     private BottomSheetBehavior bottomSheetBehavior, fetchBillSheetBehaviour;
 
     private GetBillsViewModel viewModel;
+    ShimmerFrameLayout shimmerFrameLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,9 +56,7 @@ public class ViewBillsActivity extends AppCompatActivity implements ViewBillsAda
         setContentView(R.layout.activity_view_bills);
 
         CoordinatorLayout coordinatorLayout = findViewById(R.id.coordinator);
-        ShimmerFrameLayout shimmerFrameLayout = findViewById(R.id.shimmer);
-
-        shimmerFrameLayout.startShimmer();
+        shimmerFrameLayout = findViewById(R.id.shimmer);
 
         fetchBillSheet = findViewById(R.id.fetch_bill_bottom_sheet);
         fetchBillSheetBehaviour = BottomSheetBehavior.from(fetchBillSheet);
@@ -87,18 +88,7 @@ public class ViewBillsActivity extends AppCompatActivity implements ViewBillsAda
 
         if(!username.isEmpty()){
             viewModel.init(username, password);
-            viewModel.getBills().observe(ViewBillsActivity.this, new Observer<GetBillsResponse>() {
-                @Override
-                public void onChanged(GetBillsResponse getBillsResponse) {
-                    if(getBillsResponse != null){
-                        shimmerFrameLayout.stopShimmer();
-                        shimmerFrameLayout.setVisibility(View.GONE);
-                        adapter.setBills((ArrayList<Result>) getBillsResponse.getResults());
-                        adapter.notifyDataSetChanged();
-                        Log.d(TAG, "Bills loaded into RV " + getBillsResponse.getCount());
-                    }
-                }
-            });
+            fetchAllBills();
         }
 
         bottomSheet = findViewById(R.id.bottom_sheet);
@@ -138,14 +128,32 @@ public class ViewBillsActivity extends AppCompatActivity implements ViewBillsAda
 
     @Override
     public void deleteBill(Result bill, int pos) {
-        DeleteBillViewModel viewModel = new ViewModelProvider(ViewBillsActivity.this).get(DeleteBillViewModel.class);
-        viewModel.init();
-        viewModel.deleteBill(username, password, bill.getId()).observe(this, new Observer<ResponseBody>() {
+        MaterialAlertDialogBuilder builder =new MaterialAlertDialogBuilder(this);
+        builder.setTitle("Delete bill");
+        builder.setMessage("Are you sure you want to delete the bill?");
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
-            public void onChanged(ResponseBody responseBody) {
-
+            public void onClick(DialogInterface dialogInterface, int i) {
+                DeleteBillViewModel viewModel = new ViewModelProvider(ViewBillsActivity.this).get(DeleteBillViewModel.class);
+                viewModel.init();
+                viewModel.deleteBill(username, password, bill.getId()).observe(ViewBillsActivity.this,
+                        new Observer<ResponseBody>() {
+                    @Override
+                    public void onChanged(ResponseBody responseBody) {
+                        Snackbar snackbar = Snackbar.make(findViewById(R.id.coordinator), "Bill deleted successfully", Snackbar.LENGTH_LONG);
+                        snackbar.show();
+                        fetchAllBills();
+                    }
+                });
             }
         });
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                fetchAllBills();
+            }
+        });
+        builder.show();
     }
 
     @Override
@@ -185,6 +193,23 @@ public class ViewBillsActivity extends AppCompatActivity implements ViewBillsAda
                 dueDateTv.setText("Due Date : ");
                 amountTv.setText("Amount To Be Paid. : ");
                 fetchBillSheetBehaviour.setState(BottomSheetBehavior.STATE_COLLAPSED);
+            }
+        });
+    }
+
+    private void fetchAllBills(){
+        shimmerFrameLayout.setVisibility(View.VISIBLE);
+        shimmerFrameLayout.startShimmer();
+        viewModel.getBills().observe(ViewBillsActivity.this, new Observer<GetBillsResponse>() {
+            @Override
+            public void onChanged(GetBillsResponse getBillsResponse) {
+                if(getBillsResponse != null){
+                    shimmerFrameLayout.stopShimmer();
+                    shimmerFrameLayout.setVisibility(View.GONE);
+                    adapter.setBills((ArrayList<Result>) getBillsResponse.getResults());
+                    adapter.notifyDataSetChanged();
+                    Log.d(TAG, "Bills loaded into RV " + getBillsResponse.getCount());
+                }
             }
         });
     }

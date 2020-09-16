@@ -85,7 +85,6 @@ public class ViewBillsAdapter extends RecyclerView.Adapter<ViewBillsAdapter.MyVi
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(context, "Touched" , Toast.LENGTH_SHORT).show();
                 rvListener.fetchBill(response);
             }
         });

@@ -5,11 +5,13 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -26,6 +28,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.ishanvohra.halanxtask.Adapter.CategoryAdapter;
 import com.ishanvohra.halanxtask.Adapter.HouseAdapter;
 import com.ishanvohra.halanxtask.Adapter.TenantAdapter;
+import com.ishanvohra.halanxtask.InstantAutoComplete;
 import com.ishanvohra.halanxtask.Model.Category;
 import com.ishanvohra.halanxtask.Model.CreateBillBody;
 import com.ishanvohra.halanxtask.Model.CreateBillResponse;
@@ -50,6 +53,7 @@ public class CreateNewBillActivity extends AppCompatActivity {
     private String dateString = "";
     private static String TAG = "CreateNewBillActivity";
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -106,14 +110,15 @@ public class CreateNewBillActivity extends AppCompatActivity {
 
         //loading up the houses for autocomplete text view
         HouseAdapter houseAdapter = new HouseAdapter(this, R.layout.auto_complete_layout, new ArrayList<>());
-        houseTv.setThreshold(1);
         houseTv.setAdapter(houseAdapter);
 
         viewModel.getHouses().observe(this, new Observer<GetHouseResponse>() {
             @Override
             public void onChanged(GetHouseResponse getHouseResponse) {
-                if(getHouseResponse != null)
+                if(getHouseResponse != null){
                     houseAdapter.setHouses((ArrayList<HouseResult>) getHouseResponse.getResults());
+                    houseAdapter.notifyDataSetChanged();
+                }
             }
         });
 
@@ -122,6 +127,14 @@ public class CreateNewBillActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 HouseResult house = houseAdapter.getItem(i);
                 houseIndex = house.getId();
+            }
+        });
+
+        houseTv.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                houseTv.showDropDown();
+                return true;
             }
         });
 
@@ -143,6 +156,14 @@ public class CreateNewBillActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 tenantIndex = tenantAdapter.getItem(i).getId();
                 Toast.makeText(CreateNewBillActivity.this,  tenantTv.getText().toString() + " index : " + tenantIndex, Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        tenantTv.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                tenantTv.showDropDown();
+                return true;
             }
         });
 
