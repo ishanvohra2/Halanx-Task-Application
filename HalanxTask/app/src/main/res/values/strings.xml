@@ -15,4 +15,5 @@
     <string name="enter_tenant_s_name">Enter Tenant\'s Name</string>
     <string name="create">Create</string>
     <string name="phone_number">Phone Number</string>
+    <string name="mark_as_paid_offline">Mark as paid offline</string>
 </resources>

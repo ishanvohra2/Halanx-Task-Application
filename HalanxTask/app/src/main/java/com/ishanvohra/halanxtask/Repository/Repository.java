@@ -13,6 +13,8 @@ import com.ishanvohra.halanxtask.Model.GetHouseResponse;
 import com.ishanvohra.halanxtask.Model.GetTenantResponse;
 import com.ishanvohra.halanxtask.Model.LoginBody;
 import com.ishanvohra.halanxtask.Model.LoginResponse;
+import com.ishanvohra.halanxtask.Model.MarkBillAsPaidBody;
+import com.ishanvohra.halanxtask.Model.MarkBillAsPaidResponse;
 import com.ishanvohra.halanxtask.Network.HalanxAPI;
 import com.ishanvohra.halanxtask.Network.RetrofitService;
 
@@ -202,6 +204,27 @@ public class Repository {
 
             @Override
             public void onFailure(Call<GetBillResponse> call, Throwable t) {
+                Log.d(TAG, "Bill fetch Failed " + t.getMessage());
+                mutableLiveData.setValue(null);
+            }
+        });
+
+        return mutableLiveData;
+    }
+
+    public MutableLiveData<MarkBillAsPaidResponse> markBillAsPaid(int id, MarkBillAsPaidBody body){
+        MutableLiveData<MarkBillAsPaidResponse> mutableLiveData = new MutableLiveData<>();
+        halanxAPI.markBillAsPaid(id, body).enqueue(new Callback<MarkBillAsPaidResponse>() {
+            @Override
+            public void onResponse(Call<MarkBillAsPaidResponse> call, Response<MarkBillAsPaidResponse> response) {
+                if(response.isSuccessful()){
+                    mutableLiveData.setValue(response.body());
+                }
+                Log.d(TAG, "Bill Paid Response: " + response.code() + " " + response.message());
+            }
+
+            @Override
+            public void onFailure(Call<MarkBillAsPaidResponse> call, Throwable t) {
                 Log.d(TAG, "Bill fetch Failed " + t.getMessage());
                 mutableLiveData.setValue(null);
             }

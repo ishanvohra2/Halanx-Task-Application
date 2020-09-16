@@ -16,6 +16,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,6 +29,8 @@ import com.ishanvohra.halanxtask.Adapter.SwipeToDeleteCallback;
 import com.ishanvohra.halanxtask.Adapter.ViewBillsAdapter;
 import com.ishanvohra.halanxtask.Model.GetBillResponse;
 import com.ishanvohra.halanxtask.Model.GetBillsResponse;
+import com.ishanvohra.halanxtask.Model.MarkBillAsPaidBody;
+import com.ishanvohra.halanxtask.Model.MarkBillAsPaidResponse;
 import com.ishanvohra.halanxtask.Model.Result;
 import com.ishanvohra.halanxtask.R;
 import com.ishanvohra.halanxtask.ViewModel.DeleteBillViewModel;
@@ -159,7 +162,9 @@ public class ViewBillsActivity extends AppCompatActivity implements ViewBillsAda
     @Override
     public void fetchBill(Result bill) {
         TextView tenantNameTv, tenantPhoneTv, addressTv, categoryTv, dueDateTv, amountTv;
+        Button payBillBtn;
 
+        payBillBtn = fetchBillSheet.findViewById(R.id.fetch_bill_pay_btn);
         tenantNameTv = fetchBillSheet.findViewById(R.id.fetch_bill_tenant_tv);
         tenantPhoneTv = fetchBillSheet.findViewById(R.id.fetch_bill_tenant_phone_tv);
         categoryTv = fetchBillSheet.findViewById(R.id.fetch_bill_category_tv);
@@ -193,6 +198,27 @@ public class ViewBillsActivity extends AppCompatActivity implements ViewBillsAda
                 dueDateTv.setText("Due Date : ");
                 amountTv.setText("Amount To Be Paid. : ");
                 fetchBillSheetBehaviour.setState(BottomSheetBehavior.STATE_COLLAPSED);
+            }
+        });
+
+        if(bill.getPaid())
+            payBillBtn.setVisibility(View.GONE);
+
+        payBillBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MarkBillAsPaidBody body = new MarkBillAsPaidBody();
+                body.setPaid(true);
+                viewModel.markBillAsPaid(bill.getId(), body).observe(ViewBillsActivity.this, new Observer<MarkBillAsPaidResponse>() {
+                    @Override
+                    public void onChanged(MarkBillAsPaidResponse markBillAsPaidResponse) {
+                        if(markBillAsPaidResponse != null){
+                            Snackbar snackbar = Snackbar.make(findViewById(R.id.coordinator), "Bill marked as paid successfully", Snackbar.LENGTH_LONG);
+                            snackbar.show();
+                            payBillBtn.setVisibility(View.GONE);
+                        }
+                    }
+                });
             }
         });
     }

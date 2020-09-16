@@ -6,6 +6,8 @@ import androidx.lifecycle.ViewModel;
 
 import com.ishanvohra.halanxtask.Model.GetBillResponse;
 import com.ishanvohra.halanxtask.Model.GetBillsResponse;
+import com.ishanvohra.halanxtask.Model.MarkBillAsPaidBody;
+import com.ishanvohra.halanxtask.Model.MarkBillAsPaidResponse;
 import com.ishanvohra.halanxtask.Network.HalanxAPI;
 import com.ishanvohra.halanxtask.Repository.Repository;
 
@@ -28,6 +30,10 @@ public class GetBillsViewModel extends ViewModel {
 
     public LiveData<GetBillResponse> getBill(int id){
         return repository.getBill(id);
+    }
+
+    public LiveData<MarkBillAsPaidResponse> markBillAsPaid(int id, MarkBillAsPaidBody body){
+        return repository.markBillAsPaid(id, body);
     }
 
 }

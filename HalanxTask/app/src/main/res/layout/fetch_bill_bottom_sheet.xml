@@ -160,6 +160,18 @@
 
             </LinearLayout>
 
+            <Button
+                android:id="@+id/fetch_bill_pay_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:paddingStart="50dp"
+                android:paddingEnd="50dp"
+                android:text="@string/mark_as_paid_offline"
+                android:textColor="@android:color/white"
+                android:backgroundTint="@color/colorAccent"
+                android:layout_margin="12dp"/>
+
         </LinearLayout>
 
     </LinearLayout>
